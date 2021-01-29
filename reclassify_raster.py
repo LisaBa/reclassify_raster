@@ -11,7 +11,7 @@ class RasterReclassification:
         self.file_type = file_type
         self.export_folder = export_folder
 
-    def reclassify(self):
+    def reclassify(self, new_value=0):
         image_list = [
             f for f in os.listdir(self.image_folder) if f.endswith(self.file_type)
         ]
@@ -21,8 +21,8 @@ class RasterReclassification:
             with rio.open(os.path.join(self.image_folder, image)) as src:
                 img = src.read()
 
-                # Replace all values other than 0 with 1
-                img = np.where(img > 0, 1, 0)
+                # Replace all values other than 0 with the set value
+                img = np.where(img > 0, new_value, 0)
                 print(img.shape)
 
                 # Safe reclassified raster
